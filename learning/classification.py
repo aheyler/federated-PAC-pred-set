@@ -1,6 +1,5 @@
 import os, sys
 import time
-
 from learning import *
 #from uncertainty import compute_ece
 
@@ -38,7 +37,6 @@ class ClsFederatedLearner(BaseFederatedLearner):
         self.loss_fn_val = loss_01
         self.loss_fn_test = loss_01
         
-    # MODIFY
     def test(self, ld, mdl=None, loss_fn=None, ld_name=None, verbose=False):
         t_start = time.time()
         error, *_ = super().test(ld, mdl, loss_fn)

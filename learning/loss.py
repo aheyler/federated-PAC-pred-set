@@ -1,10 +1,9 @@
 import os, sys
-
 import torch as tc
 from torch import nn
-
 from .util import *
 from model.util import neg_log_prob
+
 
 def reduce(loss_vec, reduction):
     if reduction == 'mean':

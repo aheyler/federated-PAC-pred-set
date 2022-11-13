@@ -1,0 +1,86 @@
+args:
+	exp_name: exp_diff_priv_dev_v2
+	snapshot_root: snapshots
+	cpu: False
+	multi_gpus: False
+	data:
+		batch_size: 16
+		n_workers: 8
+		src: FEMNIST
+		num_participants: None
+		preselected_participants: None
+		in_dim: 784
+		n_labels: 62
+		seed: 42
+		device: cuda:0
+		exp_name: exp_diff_priv_dev_v2
+		snapshot_root: snapshots
+
+	model:
+		base: ResNet18
+		path_pretrained: None
+		device: cuda:0
+		exp_name: exp_diff_priv_dev_v2
+		snapshot_root: snapshots
+
+	train:
+		federated: True
+		dp: True
+		dp_eps: True
+		dp_delta: True
+		rerun: False
+		load_final: False
+		resume: None
+		method: src
+		optimizer: SGD
+		n_epochs: 50
+		lr: 0.001
+		momentum: 0.9
+		weight_decay: 0.0
+		lr_decay_epoch: 20
+		lr_decay_rate: 0.75
+		val_period: 1
+		device: cuda:0
+		exp_name: exp_diff_priv_dev_v2
+		snapshot_root: snapshots
+
+	train_ps:
+		method: pac_predset_federated
+		rerun: False
+		load_final: False
+		verbose: True
+		binary_search: False
+		bnd_type: direct
+		T_step: 1e-07
+		T_end: inf
+		eps_tol: 1.25
+		n: 5000
+		eps: 0.01
+		delta: 0.001
+		device: cuda:0
+		exp_name: exp_diff_priv_dev_v2
+		snapshot_root: snapshots
+
+	device: cuda:0
+
+## init datasets: FEMNIST
+All participants initially loaded
+#train = 336482, #val = 42688, #test = 42058
+#num_participants = 1238
+
+## init models: ResNet18
+
+Created federated learner
+## train...
+Entered train
+Number of participants: 1238
+Set optimizer
+Beginning training
+DP-SGD with sampling rate = 100% and noise_multiplier = 7.838604975646454 iterated over 150 steps satisfies differential privacy with eps = 5 and delta = 0.01.
+Beginning epoch 1:
+[1/50 epoch, 14086.97 sec.] error_test = 0.9684, error_val = 0.9679 (error_val_best = inf), saved
+Beginning epoch 2:
+[2/50 epoch, 14302.67 sec.] error_test = 0.9624, error_val = 0.9610 (error_val_best = 0.9679), saved
+Beginning epoch 3:
+[3/50 epoch, 13989.92 sec.] error_test = 0.9900, error_val = 0.9898 (error_val_best = 0.9610)
+Beginning epoch 4:

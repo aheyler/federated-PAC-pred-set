@@ -5,6 +5,7 @@ import copy
 import torch as tc
 from torch import nn, optim
 from copy import deepcopy
+from learning.fldp import FLServer
 
 class BaseLearner:
     def __init__(self, mdl, params=None, name_postfix=None, local_mdl=None):
@@ -236,36 +237,138 @@ class BaseLearner:
 
 class BaseFederatedLearner(BaseLearner):
     # take in global model, and list of local models
-    def __init__(self, mdl, local_mdl, params=None, name_postfix=None):
+    # first time running: epsilon=4.0, delta=10e-4, E=1
+    # config #2: c=1.0, E=3, C=1.0, epsilon=5.0, delta=10e-3, q=1.0
+    def __init__(self, mdl, local_mdl, params=None, name_postfix=None, c=1.0, E=3, C=1.0, epsilon=5.0, delta=10e-3, q=1.0):
         BaseLearner.__init__(self, mdl, params=params, name_postfix=name_postfix, local_mdl=local_mdl)
         self.device = "cuda" if tc.cuda.is_available() else "cpu"
         self.global_model = mdl
         self.local_model = local_mdl
+        self.E = E  # number of training epochs during each federation round
+        self.C = C  # fraction of the clients to sample for training in each federation round
+        self.epsilon = epsilon  # DP epsilon parameter
+        self.delta = delta  # DP delta parameter
+        self.q = q # Local sampling rate of samples at each node
+        self.c = c # clipping parameter during local updates
         
-
-    def models_to_device(self): 
-        self.global_model = self.global_model.to(self.device)
-        self.local_model = self.local_model.to(self.device)
-
-
-    def set_optimizer(self): 
-        ## init an optimizer
-        if self.params.optimizer == "Adam":
-            return optim.Adam(self.local_model.parameters(), lr=self.params.lr)
-        elif self.params.optimizer == "AMSGrad":
-            return optim.Adam(self.local_model.parameters(), lr=self.params.lr, amsgrad=True)
-        elif self.params.optimizer == "SGD":
-            return optim.SGD(self.local_model.parameters(), lr=self.params.lr, momentum=self.params.momentum, weight_decay=self.params.weight_decay)
-        else:
-            raise NotImplementedError("No optimizer found")
-
-
-    def copy_global_model(self): 
-        global_state_dict = deepcopy(self.global_model.state_dict())
-        self.local_model.load_state_dict(global_state_dict)
-            
-
+        
     def train(self, train_loader_list, val_loader_list=None, test_loader_list=None):
+        print("Entered train")
+        self.num_participants = len(train_loader_list)
+        print(f"Number of participants: {self.num_participants}")
+
+        if not self.params.rerun and not self.params.resume and self._check_model(best=False):
+            if self.params.load_final: 
+                self._load_model(best=False)
+            else: 
+                self._load_model(best=True)
+            return None, None
+            print("Model loading if applicable complete")
+
+        self.time_train_begin = time.time()
+        
+        print("Set optimizer")
+
+        # If resuming training: 
+        if self.params.resume:
+            print("Resuming training")
+            chkp = self._load_chkp(self.params.resume)
+            self.epoch_init = chkp['epoch']
+            self.opt.load_state_dict(chkp['opt_state'])
+            self.scheduler.load_state_dict(chkp['sch_state'])
+            self.global_model.load_state_dict(chkp['mdl_state']).to(self.params.device)
+            self.error_val_best = chkp['error_val_best']
+            print(f'## resume training from {self.params.resume}: epoch={self.epoch_init} ')
+        
+        # Otherwise start training
+        else: 
+            print("Beginning training", flush=True)
+            ## init the epoch_init
+            self.epoch_init = 1
+            self.error_val_best = np.inf
+
+            self._save_model(best=True)
+            
+            fl_param = {
+                'output_size': 62,  # number of units in output layer
+                'client_num': self.num_participants,   # number of clients
+                'model': self.mdl,  # model
+                'data': val_loader_list, # dataset
+                'lr': self.params.lr,           # learning rate
+                'E': self.E,            # number of local iterations
+                'eps': self.epsilon,         # privacy budget
+                'delta': self.delta,      # approximate differential privacy: (epsilon, delta)-DP
+                'q': self.q,          # sampling rate
+                'clip': self.c,          # clipping norm
+                'tot_epochs': self.params.n_epochs,        # number of aggregation times (communication rounds)
+                'device': self.device, 
+                'C': self.C
+            }
+
+            server = FLServer(fl_param, val_loader_list).to(self.device)
+            val_errors = []
+            test_errors = []
+            for i_epoch in range(self.epoch_init, self.params.n_epochs + 1): 
+                self.time_epoch_begin = time.time()
+                print(f"Beginning epoch {i_epoch}:")
+                error_val = 1 - [server.global_update()][0]
+                val_errors.append(error_val)
+
+                ## save server global model
+                server_model_dict = server.global_model.state_dict()
+                self.mdl.load_state_dict(server_model_dict)
+                
+                ## train epoch end
+                self._train_epoch_batch_end(i_epoch)
+                msg = ''
+
+                ## test error
+                if test_loader_list:
+                    error_te, *_ = self.test(test_loader_list)
+                    test_errors.append(error_te.item())
+                    msg += 'error_test = %.4f, '%(error_te)
+                    
+                ## validate the current model and save if it is the best so far
+                msg += 'error_val = %.4f (error_val_best = %.4f)'%(error_val, self.error_val_best)
+                if self.error_val_best >= error_val:
+                    msg += ', saved'
+                    self._save_model(best=True)
+                    self.error_val_best = error_val
+                elif val_loader_list is None:
+                    self._save_model(best=False)
+                    msg += 'saved'
+
+                ## print the current status
+                # msg = '[%d/%d epoch, lr=%.2e, %.2f sec.] '%(
+                msg = '[%d/%d epoch, %.2f sec.] '%(
+                    i_epoch, self.params.n_epochs, 
+                    # self.opt.param_groups[0]['lr'],
+                    time.time() - self.time_epoch_begin,
+                ) + msg
+                
+                print(msg)
+                
+                np.save(f"{self.err_arrays_chkp}/val_errors.npy", val_errors)
+                np.save(f"{self.err_arrays_chkp}/test_errors.npy", test_errors)
+
+            ## train end
+            ## save the final model
+            fn = self._save_model(best=False)
+            print('## save the final model to %s'%(fn))
+            
+            ## load the model
+            if not self.params.load_final:
+                fn = self._load_model(best=True)
+                print("## load the best model from %s"%(fn))
+
+            ## print training time
+            if hasattr(self, 'time_train_begin'):
+                print("## training time: %f sec."%(time.time() - self.time_train_begin))
+                
+            self._save_model(best=False)
+
+    def trainv1(self, train_loader_list, val_loader_list=None, test_loader_list=None):
+        np.random.seed(42) 
         print("Entered train")
         self.num_participants = len(train_loader_list)
         print(f"Number of participants: {self.num_participants}")
@@ -316,7 +419,7 @@ class BaseFederatedLearner(BaseLearner):
 
             self._save_model(best=True)
 
-            # Training loop begins
+            # FL training loop begins
             for i_epoch in range(self.epoch_init, self.params.n_epochs + 1):
                 print(f"Beginning epoch {i_epoch}", flush=True)
                 self.i_epoch = i_epoch
@@ -324,35 +427,47 @@ class BaseFederatedLearner(BaseLearner):
                 self.sizes = []
                 training_incorrect = 0
                 
-                # Federated learning: Loop through each participant
-                for participant_idx in range(self.num_participants): 
+                # Begin federation round - sample participants
+                sampled_participants = np.random.choice(list(range(self.num_participants)), 
+                                                        int(self.C * self.num_participants), 
+                                                        replace=False)
+                
+                # Train on sampled participants
+                for participant_idx in sampled_participants: 
                     participant_loader = train_loader_list[participant_idx]
                     
                     # Create local model that inherits weights from the global model
                     self.copy_global_model()
-                    participant_errs = 0
-                    participant_size = 0
-
-                    for x, y in participant_loader:
-                        participant_size += len(y)
-                        x = x.to(self.params.device)
-                        y = y.to(self.params.device)
-                        
-                        # Zero out the gradient from the optimizer
-                        self.opt.zero_grad()
-
-                        # Compute loss through network
-                        self.loss_dict = self.loss_fn_train(x, y, lambda x: self.local_model(x, training=True), \
-                                reduction='mean', device=self.params.device)
-                        self.loss_dict['loss'].backward()
-                        
-                        # Step weight adjustment
-                        self.opt.step()
-                        
-                        # Measure accuracy
-                        y_pred = self.local_model(x)['yh_top']
-                        participant_errs += sum(y != y_pred).item()
                     
+                    # Train for E epochs per participant
+                    for local_epoch in range(self.E): 
+                    
+                        participant_errs = 0
+                        participant_size = 0
+
+                        for batch_x, batch_y in participant_loader:
+                            participant_size += len(batch_y)
+                            batch_x = batch_x.to(self.params.device)
+                            batch_y = batch_y.to(self.params.device)
+                            
+                            # Zero out the gradient from the optimizer
+                            self.opt.zero_grad()
+
+                            # Compute loss through network
+                            self.loss_dict = self.loss_fn_train(batch_x, batch_y, lambda x: self.local_model(x, training=True), \
+                                    reduction='mean', device=self.params.device)
+                            self.loss_dict['loss'].backward()
+                            
+                            # Step weight adjustment
+                            self.opt.step()
+                            
+                            # Measure accuracy
+                            if local_epoch == self.E - 1: 
+                                y_pred = self.local_model(batch_x)['yh_top']
+                                batch_errs = sum(batch_y != y_pred).item()
+                                participant_errs += batch_errs
+                        
+                    # Add last epoch's participant_errs to total tally
                     training_incorrect += participant_errs
                     
                     if participant_idx % 50 == 0:
@@ -362,9 +477,13 @@ class BaseFederatedLearner(BaseLearner):
                     # Keep track of participant sizes
                     self.sizes.append(participant_size)
                     
-                    # Update weights to global model
-                    local_model_params = deepcopy(self.local_model.state_dict())            
+                    # Copy local model params
+                    local_model_params = deepcopy(self.local_model.state_dict())    
                     
+                    # Calculate noise to add to weight updates       
+                    # sigma = compute_noise(n, len(batch_y), self.target_epsilon, epochs, delta, noise_lbd)
+                    
+                    # Aggregate global model
                     if participant_idx == 0: 
                         new_global_model_params = {}
                         for key in local_model_params: 

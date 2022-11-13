@@ -1,7 +1,7 @@
-# Federated PAC Prediction Sets
+# PAC Prediction Sets
 
-## FEMNIST Demo
+## MNIST Demo
 ```
-python3 main_cls_femnist.py --exp_name exp_femnist
+python3 main_cls_mnist.py --exp_name exp_mnist
 ```
 

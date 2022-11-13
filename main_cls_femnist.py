@@ -62,19 +62,21 @@ def main(args):
         mdl.load_state_dict(tc.load(args.model.path_pretrained))
         print(f"Loaded model from {args.model.path_pretrained}")
 
-    ## prediction set estimation
-    print("## prediction set estimation")
-    if args.train_ps.method == 'pac_predset_CP':
-        mdl_ps = model.PredSetCls(mdl)
-        l = uncertainty.PredSetConstructor_CP(mdl_ps, args.train_ps)
-    elif args.train_ps.method == 'pac_predset_federated': 
-        print("Begin federated PS construction")
-        # mdl_ps = model.PredSetFederatedCls(mdl, eps=args.train_ps.eps, delta=args.train_ps.delta, n=args.train_ps.n)
-        l = uncertainty.PredSetConstructor_Federated(mdl, args.train_ps)
-    else:
-        raise NotImplementedError
-    l.train(ds.val)
-    l.test(ds.test) #, ld_name=f'test datasets', verbose=True)
+    # ## prediction set estimation
+    # print("## prediction set estimation")
+    # if args.train_ps.method == 'pac_predset_CP':
+    #     mdl_ps = model.PredSetCls(mdl)
+    #     l = uncertainty.PredSetConstructor_CP(mdl_ps, args.train_ps)
+    # elif args.train_ps.method == 'pac_predset_federated': 
+    #     print("Begin federated PS construction")
+    #     # mdl_ps = model.PredSetFederatedCls(mdl, eps=args.train_ps.eps, delta=args.train_ps.delta, n=args.train_ps.n)
+    #     l = uncertainty.PredSetConstructor_Federated(mdl, args.train_ps)
+    # else:
+    #     raise NotImplementedError
+    # l.train(ds.val)
+    # l.test(ds.test) #, ld_name=f'test datasets', verbose=True)
+    
+    
     # plt.figure()
     # plt.plot(test_errors)
     # plt.plot(val_errors)
@@ -92,7 +94,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='PAC Prediction Set')
 
     ## meta args
-    parser.add_argument('--exp_name', type=str, default="latest_femnist_ps_v4_nov1")
+    parser.add_argument('--exp_name', type=str, default="exp_diff_priv_dev_v2")
     parser.add_argument('--snapshot_root', type=str, default='snapshots')
     parser.add_argument('--cpu', action='store_true')
     parser.add_argument('--multi_gpus', action='store_true')
@@ -106,14 +108,16 @@ if __name__ == '__main__':
     parser.add_argument('--data.in_dim', type=str, default=28*28) 
     parser.add_argument('--data.n_labels', type=int, default=62)
     parser.add_argument('--data.seed', type=int, default=42)
-    # parser.add_argument('--data.seed', type=lambda v: None if v=='None' else int(v), default=0)
     
     ## model args
     parser.add_argument('--model.base', type=str, default='ResNet18') 
-    parser.add_argument('--model.path_pretrained', type=str, default="/home/aheyler/PAC-pred-set/snapshots/latest_exp_femnist_200_per_participant_v2/model_params_best")
+    parser.add_argument('--model.path_pretrained', type=str) #, default="/home/aheyler/PAC-pred-set/snapshots/exp_dpfl_dev/model_params_best")
 
     ## train args
     parser.add_argument('--train.federated', type=bool, default=True)
+    parser.add_argument('--train.dp', type=bool, default=True)
+    parser.add_argument('--train.dp_eps', type=bool, default=True)
+    parser.add_argument('--train.dp_delta', type=bool, default=True)
     parser.add_argument('--train.rerun', action='store_true')
     parser.add_argument('--train.load_final', action='store_true')
     parser.add_argument('--train.resume', type=str)

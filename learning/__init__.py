@@ -5,4 +5,5 @@ from learning.base import BaseLearner, BaseFederatedLearner
 from learning.classification import ClsLearner, ClsFederatedLearner
 from learning.regression import RegLearner
 
+from learning.fldp import FLServer, FLClient
 
