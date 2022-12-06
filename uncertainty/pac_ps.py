@@ -59,7 +59,7 @@ class PredSetConstructor(BaseLearner):
 
 class PredSetConstructorFederated(BaseFederatedLearner):
     def __init__(self, model, params=None, name_postfix=None):
-        print("PredSetConstructorFederated params")
+        print("PredSetConstructorFederated params:")
         print(params)
         super().__init__(model, local_mdl=None, params=params, name_postfix=name_postfix)
 

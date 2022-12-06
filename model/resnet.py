@@ -5,7 +5,12 @@ import torch as tc
 from torch import nn
 import torch.nn.functional as F
 from torchvision import models
+# import model.resnets_no_bn as resnets_no_bn
+# from model.resnets_no_bn import ResNet
 import threading
+from opacus.validators import ModuleValidator
+
+
 
 class ResNet(nn.Module):
     def __init__(self, n_labels, resnet_id, path_pretrained=None):
@@ -21,6 +26,11 @@ class ResNet(nn.Module):
             self.model.load_state_dict({k.replace('model.', '').replace('module.', '').replace('mdl.', ''): v for k, v in
                                         tc.load(path_pretrained, map_location=tc.device('cpu')).items()})
 
+        dp = False
+        if dp: 
+            self.model = ModuleValidator.fix(self.model)
+            ModuleValidator.validate(self.model, strict=False)
+            
         self.feat = {}
         def feat_hook(model, input, output):
             #self.feat = tc.flatten(output, 1)
@@ -33,11 +43,8 @@ class ResNet(nn.Module):
         if training:
             self.train()
         else:
-            self.eval()
-
-        # print("forward")
-        # x = tc.cat((x, x), 0)
-        # print(x.shape)        
+            self.eval()      
+        
         x = self.model(x)
         
         return {'fh': x, 'ph': F.softmax(x, -1), 'yh_top': x.argmax(-1), 'ph_top': F.softmax(x, -1).max(-1)[0], 'feat': self.feat[threading.get_ident()]}

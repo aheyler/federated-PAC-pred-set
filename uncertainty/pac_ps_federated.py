@@ -48,8 +48,10 @@ class PredSetConstructor_Federated(PredSetConstructorFederated):
         self.name_postfix = self.name_postfix + f'_n_{self.n}_eps_{self.eps:e}_delta_{self.delta:e}'         
 
         # Solve for k*
+        print("Computing k")
         k = compute_k(self.n, self.eps, self.delta)
         
+        print("Precomputing predicted logits...")
         nlls = tc.Tensor([]).to(self.device)
         logits = tc.Tensor([]).to(self.device)
         labels = tc.Tensor([]).to(self.device)
@@ -96,7 +98,7 @@ class PredSetConstructor_Federated(PredSetConstructorFederated):
             while window_size > 1e-5:
                 # prob_thresh_T \in [0, 1]
                 if low == 0 and high == 1: 
-                    prob_thresh_T = 0.25
+                    prob_thresh_T = 0.5
                 else: 
                     prob_thresh_T = (low + high) / 2
                 
@@ -107,15 +109,49 @@ class PredSetConstructor_Federated(PredSetConstructorFederated):
                 set = nlls <= T
                 membership = set.gather(1, labels.view(-1, 1)).squeeze(1)
                 errs = sum(membership == False)
+            
                 
                 # Evaluate sizes
                 sizes = set.sum(1).float()
+                                                
                 min = tc.min(sizes).item()
                 q1 = tc.quantile(sizes, 0.25, interpolation='nearest').item()
                 med = tc.median(sizes).item()
                 q3 = tc.quantile(sizes, 0.75, interpolation='nearest').item()
                 max = tc.max(sizes).item()
                 mean = tc.mean(sizes).item()
+                # else: 
+                #     # print(f"membership type = {type(membership)}")
+                #     # print(f"sizes = {sizes}")
+                #     # print(f"sizes type = {type(sizes)}")
+                #     sizes = sizes.detach().cpu().numpy()
+                #     membership = membership.detach().cpu().numpy()
+                #     print(f"membership = {membership}")
+                #     correct_sizes = sizes[membership]
+                #     np.save("correct_sizes.npy", correct_sizes)
+                    
+                #     correct_sizes = tc.tensor(correct_sizes)
+                #     not_membership = 1 - membership
+                #     incorrect_sizes = sizes[not_membership]
+                #     np.save("incorrect_sizes.npy", incorrect_sizes)
+                #     incorrect_sizes = tc.tensor(incorrect_sizes)
+                    
+                #     print(f"correct len = {len(correct_sizes)}")
+                #     print(f"incorrect len = {len(incorrect_sizes)}")
+                    
+                #     correct_min = tc.min(correct_sizes).item()
+                #     correct_q1 = tc.quantile(correct_sizes, 0.25, interpolation='nearest').item()
+                #     correct_med = tc.median(correct_sizes).item()
+                #     correct_q3 = tc.quantile(correct_sizes, 0.75, interpolation='nearest').item()
+                #     correct_max = tc.max(correct_sizes).item()
+                #     correct_mean = tc.mean(correct_sizes).item()
+                    
+                #     incorrect_min = tc.min(incorrect_sizes).item()
+                #     incorrect_q1 = tc.quantile(incorrect_sizes, 0.25, interpolation='nearest').item()
+                #     incorrect_med = tc.median(incorrect_sizes).item()
+                #     incorrect_q3 = tc.quantile(incorrect_sizes, 0.75, interpolation='nearest').item()
+                #     incorrect_max = tc.max(incorrect_sizes).item()
+                #     incorrect_mean = tc.mean(incorrect_sizes).item()                    
                 
                 # Update window - flipped
                 if errs == k: # Exact threshold found --> keep this T
@@ -127,7 +163,11 @@ class PredSetConstructor_Federated(PredSetConstructorFederated):
                     low = prob_thresh_T
                     window_size = high - low
                 print(f"Probability threshold={prob_thresh_T:.4f}, T={T:.4f}, Error rate = {errs/len(labels):.4f}, Errors = {errs}, Size = {[min, q1, med, q3, max]}, Mean size = {mean:.4f}")
-                
+                # else: 
+                #     print(f"Probability threshold={prob_thresh_T:.4f}, T={T:.4f}, Error rate = {errs/len(labels):.4f}, Errors = {errs}," + 
+                #           f"Correct Size = {[correct_min, correct_q1, correct_med, correct_q3, correct_max]}, Mean correct size = {correct_mean:.4f}," + 
+                #           f"Inorrect Size = {[incorrect_min, incorrect_q1, incorrect_med, incorrect_q3, incorrect_max]}, Mean incorrect size = {incorrect_mean:.4f}")
+
             self.T_opt = T
             self.prob_thresh_opt = prob_thresh_T
 
@@ -175,6 +215,15 @@ class PredSetConstructor_Federated(PredSetConstructorFederated):
             q3 = tc.quantile(sizes, 0.75, interpolation='nearest').item()
             max = tc.max(sizes).item()
             mean = tc.mean(sizes).item()
+            
+            membership_arr = membership.detach().cpu().numpy()
+            np.save("membership.npy", membership_arr)
+            sizes_arr = sizes.detach().cpu().numpy()
+            np.save("sizes.npy", sizes_arr)
+            set_arr = set.detach().cpu().numpy()
+            np.save("set.npy", set_arr)
+            labels_arr = labels.detach().cpu().numpy()
+            np.save("labels.npy", labels_arr)
             
             print(f"\n## Test dataset results for n={len(labels)}, eps={self.eps}, delta={self.delta}:")
             print(f"Probability threshold={self.prob_thresh_opt:.4f}, T={self.T_opt:.4f}, Error rate = {errs/len(labels):.4f}, Errors = {errs}, Size = {[min, q1, med, q3, max]}, Mean size = {mean:.4f}")
