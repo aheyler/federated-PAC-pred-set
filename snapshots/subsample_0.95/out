@@ -1,0 +1,104 @@
+args:
+	exp_name: subsample_0.95
+	snapshot_root: snapshots
+	cpu: False
+	multi_gpus: False
+	data:
+		batch_size: 16
+		n_workers: 8
+		src: FEMNIST
+		num_participants: None
+		preselected_participants: None
+		in_dim: 784
+		n_labels: 62
+		seed: 42
+		val_subsample_frac: 0.95
+		device: cuda:0
+		exp_name: subsample_0.95
+		snapshot_root: snapshots
+
+	model:
+		base: ResNet18
+		path_pretrained: /home/aheyler/PAC-pred-set/snapshots/non-dp-fl/latest_model_copy/model_params_best copy
+		device: cuda:0
+		exp_name: subsample_0.95
+		snapshot_root: snapshots
+
+	train:
+		n_labels: 62
+		federated: True
+		rerun: False
+		load_final: False
+		resume: None
+		method: src
+		optimizer: SGD
+		n_epochs: 200
+		lr: 0.001
+		momentum: 0.9
+		weight_decay: 1e-05
+		lr_decay_epoch: 20
+		lr_decay_rate: 0.75
+		val_period: 1
+		dp: False
+		clip: 1.0
+		client_sampling_rate: 0.5
+		E: 1
+		epsilon: 8.0
+		delta: 0.001
+		device: cuda:0
+		exp_name: subsample_0.95
+		snapshot_root: snapshots
+
+	train_ps:
+		method: pac_predset_federated
+		rerun: False
+		load_final: False
+		verbose: True
+		binary_search: False
+		bnd_type: direct
+		T_step: 1e-07
+		T_end: inf
+		eps_tol: 1.25
+		n: 5000
+		eps: 0.01
+		delta: 0.001
+		device: cuda:0
+		exp_name: subsample_0.95
+		snapshot_root: snapshots
+
+	device: cuda:0
+
+## init datasets: FEMNIST
+All participants initially loaded
+#train = 107479, #val = 13223, #test = 13824
+#num_participants = 1230
+
+## init models: ResNet18
+
+Created federated learner
+Loaded model from /home/aheyler/PAC-pred-set/snapshots/non-dp-fl/latest_model_copy/model_params_best copy
+## prediction set estimation
+Begin federated PS construction
+PredSetConstructorFederated params
+Namespace(T_end=inf, T_step=1e-07, binary_search=False, bnd_type='direct', delta=0.001, device=device(type='cuda', index=0), eps=0.01, eps_tol=1.25, exp_name='subsample_0.95', load_final=False, method='pac_predset_federated', n=5000, rerun=False, snapshot_root='snapshots', verbose=True)
+
+## Training dataset results for n=13223, eps=0.01, delta=0.001, K=97:
+Probability threshold=0.2500, T=1.3863, Error rate = 0.1242, Errors = 1642, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0573
+Probability threshold=0.1250, T=2.0794, Error rate = 0.0762, Errors = 1008, Size = [0.0, 1.0, 1.0, 2.0, 5.0], Mean size = 1.3101
+Probability threshold=0.0625, T=2.7726, Error rate = 0.0470, Errors = 621, Size = [1.0, 1.0, 1.0, 2.0, 8.0], Mean size = 1.6930
+Probability threshold=0.0312, T=3.4657, Error rate = 0.0268, Errors = 354, Size = [1.0, 1.0, 2.0, 3.0, 12.0], Mean size = 2.3051
+Probability threshold=0.0156, T=4.1589, Error rate = 0.0144, Errors = 190, Size = [1.0, 1.0, 2.0, 4.0, 25.0], Mean size = 3.3165
+Probability threshold=0.0078, T=4.8520, Error rate = 0.0076, Errors = 101, Size = [1.0, 2.0, 3.0, 6.0, 43.0], Mean size = 4.8857
+Probability threshold=0.0039, T=5.5452, Error rate = 0.0032, Errors = 42, Size = [1.0, 2.0, 4.0, 9.0, 57.0], Mean size = 7.2327
+Probability threshold=0.0059, T=5.1397, Error rate = 0.0056, Errors = 74, Size = [1.0, 2.0, 4.0, 7.0, 50.0], Mean size = 5.7498
+Probability threshold=0.0068, T=4.9856, Error rate = 0.0067, Errors = 88, Size = [1.0, 2.0, 3.0, 7.0, 46.0], Mean size = 5.2696
+Probability threshold=0.0073, T=4.9166, Error rate = 0.0070, Errors = 92, Size = [1.0, 2.0, 3.0, 6.0, 44.0], Mean size = 5.0672
+Probability threshold=0.0076, T=4.8838, Error rate = 0.0076, Errors = 101, Size = [1.0, 2.0, 3.0, 6.0, 44.0], Mean size = 4.9738
+Probability threshold=0.0074, T=4.9000, Error rate = 0.0074, Errors = 98, Size = [1.0, 2.0, 3.0, 6.0, 44.0], Mean size = 5.0211
+Probability threshold=0.0074, T=4.9083, Error rate = 0.0073, Errors = 96, Size = [1.0, 2.0, 3.0, 6.0, 44.0], Mean size = 5.0443
+Probability threshold=0.0074, T=4.9041, Error rate = 0.0073, Errors = 96, Size = [1.0, 2.0, 3.0, 6.0, 44.0], Mean size = 5.0332
+Probability threshold=0.0074, T=4.9021, Error rate = 0.0073, Errors = 96, Size = [1.0, 2.0, 3.0, 6.0, 44.0], Mean size = 5.0284
+Probability threshold=0.0074, T=4.9011, Error rate = 0.0074, Errors = 98, Size = [1.0, 2.0, 3.0, 6.0, 44.0], Mean size = 5.0245
+
+## Test dataset results for n=13824, eps=0.01, delta=0.001:
+Probability threshold=0.0074, T=4.9011, Error rate = 0.0072, Errors = 100, Size = [1.0, 2.0, 3.0, 6.0, 38.0], Mean size = 4.9802

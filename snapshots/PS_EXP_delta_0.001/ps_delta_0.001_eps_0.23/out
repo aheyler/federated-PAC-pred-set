@@ -1,0 +1,101 @@
+args:
+	exp_name: ps_delta_0.0001_eps_0.23
+	snapshot_root: snapshots
+	cpu: False
+	multi_gpus: False
+	data:
+		batch_size: 16
+		n_workers: 8
+		src: FEMNIST
+		num_participants: None
+		preselected_participants: None
+		in_dim: 784
+		n_labels: 62
+		seed: 42
+		device: cuda:0
+		exp_name: ps_delta_0.0001_eps_0.23
+		snapshot_root: snapshots
+
+	model:
+		base: ResNet18
+		path_pretrained: /home/aheyler/PAC-pred-set/snapshots/non-dp-fl/latest_model_copy/model_params_best copy
+		device: cuda:0
+		exp_name: ps_delta_0.0001_eps_0.23
+		snapshot_root: snapshots
+
+	train:
+		n_labels: 62
+		federated: True
+		rerun: False
+		load_final: False
+		resume: None
+		method: src
+		optimizer: SGD
+		n_epochs: 200
+		lr: 0.001
+		momentum: 0.9
+		weight_decay: 1e-05
+		lr_decay_epoch: 20
+		lr_decay_rate: 0.75
+		val_period: 1
+		dp: False
+		clip: 1.0
+		client_sampling_rate: 0.5
+		E: 1
+		epsilon: 8.0
+		delta: 0.001
+		device: cuda:0
+		exp_name: ps_delta_0.0001_eps_0.23
+		snapshot_root: snapshots
+
+	train_ps:
+		method: pac_predset_federated
+		rerun: False
+		load_final: False
+		verbose: True
+		binary_search: False
+		bnd_type: direct
+		T_step: 1e-07
+		T_end: inf
+		eps_tol: 1.25
+		n: 5000
+		eps: 0.23
+		delta: 0.001
+		device: cuda:0
+		exp_name: ps_delta_0.0001_eps_0.23
+		snapshot_root: snapshots
+
+	device: cuda:0
+
+## init datasets: FEMNIST
+All participants initially loaded
+#train = 107479, #val = 14453, #test = 13824
+#num_participants = 1230
+
+## init models: ResNet18
+
+Created federated learner
+Loaded model from /home/aheyler/PAC-pred-set/snapshots/non-dp-fl/latest_model_copy/model_params_best copy
+## prediction set estimation
+Begin federated PS construction
+PredSetConstructorFederated params
+Namespace(T_end=inf, T_step=1e-07, binary_search=False, bnd_type='direct', delta=0.001, device=device(type='cuda', index=0), eps=0.23, eps_tol=1.25, exp_name='ps_delta_0.0001_eps_0.23', load_final=False, method='pac_predset_federated', n=5000, rerun=False, snapshot_root='snapshots', verbose=True)
+
+## Training dataset results for n=14453, eps=0.23, delta=0.001, K=3168:
+Probability threshold=0.2500, T=1.3863, Error rate = 0.1231, Errors = 1779, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0566
+Probability threshold=0.6250, T=0.4700, Error rate = 0.2617, Errors = 3783, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.7776
+Probability threshold=0.4375, T=0.8267, Error rate = 0.1856, Errors = 2683, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.8975
+Probability threshold=0.5312, T=0.6325, Error rate = 0.2189, Errors = 3164, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.8395
+Probability threshold=0.5781, T=0.5480, Error rate = 0.2393, Errors = 3459, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.8090
+Probability threshold=0.5547, T=0.5894, Error rate = 0.2283, Errors = 3299, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.8248
+Probability threshold=0.5430, T=0.6107, Error rate = 0.2234, Errors = 3229, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.8322
+Probability threshold=0.5371, T=0.6216, Error rate = 0.2206, Errors = 3189, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.8363
+Probability threshold=0.5342, T=0.6270, Error rate = 0.2198, Errors = 3177, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.8375
+Probability threshold=0.5327, T=0.6298, Error rate = 0.2193, Errors = 3169, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.8384
+Probability threshold=0.5320, T=0.6311, Error rate = 0.2190, Errors = 3165, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.8391
+Probability threshold=0.5323, T=0.6305, Error rate = 0.2191, Errors = 3167, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.8389
+Probability threshold=0.5325, T=0.6301, Error rate = 0.2193, Errors = 3169, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.8386
+Probability threshold=0.5324, T=0.6303, Error rate = 0.2192, Errors = 3168, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.8387
+
+## Test dataset results for n=13824, eps=0.23, delta=0.001:
+Probability threshold=0.5324, T=0.6303, Error rate = 0.2203, Errors = 3046, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.8370

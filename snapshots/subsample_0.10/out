@@ -1,0 +1,98 @@
+args:
+	exp_name: subsample_0.1
+	snapshot_root: snapshots
+	cpu: False
+	multi_gpus: False
+	data:
+		batch_size: 16
+		n_workers: 8
+		src: FEMNIST
+		num_participants: None
+		preselected_participants: None
+		in_dim: 784
+		n_labels: 62
+		seed: 42
+		val_subsample_frac: 0.1
+		device: cuda:0
+		exp_name: subsample_0.1
+		snapshot_root: snapshots
+
+	model:
+		base: ResNet18
+		path_pretrained: /home/aheyler/PAC-pred-set/snapshots/non-dp-fl/latest_model_copy/model_params_best copy
+		device: cuda:0
+		exp_name: subsample_0.1
+		snapshot_root: snapshots
+
+	train:
+		n_labels: 62
+		federated: True
+		rerun: False
+		load_final: False
+		resume: None
+		method: src
+		optimizer: SGD
+		n_epochs: 200
+		lr: 0.001
+		momentum: 0.9
+		weight_decay: 1e-05
+		lr_decay_epoch: 20
+		lr_decay_rate: 0.75
+		val_period: 1
+		dp: False
+		clip: 1.0
+		client_sampling_rate: 0.5
+		E: 1
+		epsilon: 8.0
+		delta: 0.001
+		device: cuda:0
+		exp_name: subsample_0.1
+		snapshot_root: snapshots
+
+	train_ps:
+		method: pac_predset_federated
+		rerun: False
+		load_final: False
+		verbose: True
+		binary_search: False
+		bnd_type: direct
+		T_step: 1e-07
+		T_end: inf
+		eps_tol: 1.25
+		n: 5000
+		eps: 0.01
+		delta: 0.001
+		device: cuda:0
+		exp_name: subsample_0.1
+		snapshot_root: snapshots
+
+	device: cuda:0
+
+## init datasets: FEMNIST
+All participants initially loaded
+#train = 88460, #val = 990, #test = 11931
+#num_participants = 990
+
+## init models: ResNet18
+
+Created federated learner
+Loaded model from /home/aheyler/PAC-pred-set/snapshots/non-dp-fl/latest_model_copy/model_params_best copy
+## prediction set estimation
+Begin federated PS construction
+PredSetConstructorFederated params
+Namespace(T_end=inf, T_step=1e-07, binary_search=False, bnd_type='direct', delta=0.001, device=device(type='cuda', index=0), eps=0.01, eps_tol=1.25, exp_name='subsample_0.1', load_final=False, method='pac_predset_federated', n=5000, rerun=False, snapshot_root='snapshots', verbose=True)
+
+## Training dataset results for n=990, eps=0.01, delta=0.001, K=1:
+Probability threshold=0.2500, T=1.3863, Error rate = 0.1010, Errors = 100, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0576
+Probability threshold=0.1250, T=2.0794, Error rate = 0.0667, Errors = 66, Size = [0.0, 1.0, 1.0, 1.0, 4.0], Mean size = 1.2727
+Probability threshold=0.0625, T=2.7726, Error rate = 0.0374, Errors = 37, Size = [1.0, 1.0, 1.0, 2.0, 7.0], Mean size = 1.7030
+Probability threshold=0.0312, T=3.4657, Error rate = 0.0232, Errors = 23, Size = [1.0, 1.0, 2.0, 3.0, 12.0], Mean size = 2.2788
+Probability threshold=0.0156, T=4.1589, Error rate = 0.0131, Errors = 13, Size = [1.0, 1.0, 2.0, 4.0, 19.0], Mean size = 3.2535
+Probability threshold=0.0078, T=4.8520, Error rate = 0.0101, Errors = 10, Size = [1.0, 2.0, 3.0, 6.0, 30.0], Mean size = 4.8273
+Probability threshold=0.0039, T=5.5452, Error rate = 0.0051, Errors = 5, Size = [1.0, 2.0, 4.0, 9.0, 45.0], Mean size = 7.2343
+Probability threshold=0.0020, T=6.2383, Error rate = 0.0020, Errors = 2, Size = [1.0, 3.0, 6.0, 15.0, 58.0], Mean size = 10.6444
+Probability threshold=0.0010, T=6.9315, Error rate = 0.0020, Errors = 2, Size = [1.0, 5.0, 10.0, 22.0, 62.0], Mean size = 15.1515
+Probability threshold=0.0005, T=7.6246, Error rate = 0.0010, Errors = 1, Size = [1.0, 7.0, 15.0, 32.0, 62.0], Mean size = 20.8222
+
+## Test dataset results for n=11931, eps=0.01, delta=0.001:
+Probability threshold=0.0005, T=7.6246, Error rate = 0.0004, Errors = 5, Size = [1.0, 7.0, 15.0, 31.0, 62.0], Mean size = 20.5320

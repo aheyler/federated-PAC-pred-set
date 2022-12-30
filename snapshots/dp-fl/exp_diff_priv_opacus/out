@@ -1,0 +1,106 @@
+args:
+	exp_name: exp_diff_priv_opacus
+	snapshot_root: snapshots
+	cpu: False
+	multi_gpus: False
+	data:
+		batch_size: 16
+		n_workers: 8
+		src: FEMNIST
+		num_participants: 50
+		preselected_participants: None
+		in_dim: 784
+		n_labels: 62
+		seed: 42
+		device: cuda:0
+		exp_name: exp_diff_priv_opacus
+		snapshot_root: snapshots
+
+	model:
+		base: ResNet18
+		path_pretrained: None
+		device: cuda:0
+		exp_name: exp_diff_priv_opacus
+		snapshot_root: snapshots
+
+	train:
+		federated: True
+		rerun: False
+		load_final: False
+		resume: None
+		method: src
+		optimizer: SGD
+		n_epochs: 100
+		lr: 0.001
+		momentum: 0.9
+		weight_decay: 0.0
+		lr_decay_epoch: 20
+		lr_decay_rate: 0.75
+		val_period: 1
+		dp: True
+		clip: 1.0
+		client_sampling_rate: 0.5
+		E: 5
+		epsilon: 10.0
+		delta: 0.001
+		device: cuda:0
+		exp_name: exp_diff_priv_opacus
+		snapshot_root: snapshots
+
+	train_ps:
+		method: pac_predset_federated
+		rerun: False
+		load_final: False
+		verbose: True
+		binary_search: False
+		bnd_type: direct
+		T_step: 1e-07
+		T_end: inf
+		eps_tol: 1.25
+		n: 5000
+		eps: 0.01
+		delta: 0.001
+		device: cuda:0
+		exp_name: exp_diff_priv_opacus
+		snapshot_root: snapshots
+
+	device: cuda:0
+
+## init datasets: FEMNIST
+All participants initially loaded
+#train = 5550, #val = 703, #test = 693
+#num_participants = 21
+
+## init models: ResNet18
+
+BaseFederatedLearner params
+Namespace(E=5, client_sampling_rate=0.5, clip=1.0, delta=0.001, device=device(type='cuda', index=0), dp=True, epsilon=10.0, exp_name='exp_diff_priv_opacus', federated=True, load_final=False, lr=0.001, lr_decay_epoch=20, lr_decay_rate=0.75, method='src', momentum=0.9, n_epochs=100, optimizer='SGD', rerun=False, resume=None, snapshot_root='snapshots', val_period=1, weight_decay=0.0)
+Created federated learner
+## train...
+Entered train
+Number of participants: 21
+Beginning training
+Beginning epoch 1
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+[1/100 epoch, lr=1.00e-03, 210.97 sec.] loss = 7.8869, error_train = 0.9796, error_test = 0.9913, error_val = 0.9829 (error_val_best = 0.9872), saved
+(ε = 10.00, δ = 0.001)
+Beginning epoch 2
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 9.793373603172835 iterated over 500 steps satisfies differential privacy with eps = 10 and delta = 0.001.

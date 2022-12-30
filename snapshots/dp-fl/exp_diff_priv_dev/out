@@ -1,0 +1,166 @@
+args:
+	exp_name: exp_diff_priv_dev
+	snapshot_root: snapshots
+	cpu: False
+	multi_gpus: False
+	data:
+		batch_size: 16
+		n_workers: 8
+		src: FEMNIST
+		num_participants: None
+		preselected_participants: None
+		in_dim: 784
+		n_labels: 62
+		seed: 42
+		device: cuda:0
+		exp_name: exp_diff_priv_dev
+		snapshot_root: snapshots
+
+	model:
+		base: ResNet18
+		path_pretrained: None
+		device: cuda:0
+		exp_name: exp_diff_priv_dev
+		snapshot_root: snapshots
+
+	train:
+		federated: True
+		dp: True
+		dp_eps: True
+		dp_delta: True
+		rerun: False
+		load_final: False
+		resume: None
+		method: src
+		optimizer: SGD
+		n_epochs: 50
+		lr: 0.001
+		momentum: 0.9
+		weight_decay: 0.0
+		lr_decay_epoch: 20
+		lr_decay_rate: 0.75
+		val_period: 1
+		device: cuda:0
+		exp_name: exp_diff_priv_dev
+		snapshot_root: snapshots
+
+	train_ps:
+		method: pac_predset_federated
+		rerun: False
+		load_final: False
+		verbose: True
+		binary_search: False
+		bnd_type: direct
+		T_step: 1e-07
+		T_end: inf
+		eps_tol: 1.25
+		n: 5000
+		eps: 0.01
+		delta: 0.001
+		device: cuda:0
+		exp_name: exp_diff_priv_dev
+		snapshot_root: snapshots
+
+	device: cuda:0
+
+## init datasets: FEMNIST
+All participants initially loaded
+#train = 336482, #val = 42688, #test = 42058
+#num_participants = 1238
+
+## init models: ResNet18
+
+Created federated learner
+## train...
+Entered train
+Number of participants: 1238
+Set optimizer
+Beginning training
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.392426076817048 iterated over 50 steps satisfies differential privacy with eps = 4 and delta = 0.001.
+Beginning epoch 1:
+[1/50 epoch, 6042.88 sec.] error_test = 0.9744, error_val = 0.9762 (error_val_best = inf), saved
+Beginning epoch 2:
+[2/50 epoch, 6090.12 sec.] error_test = 0.9805, error_val = 0.9809 (error_val_best = 0.9762)
+Beginning epoch 3:
+[3/50 epoch, 6164.41 sec.] error_test = 0.9464, error_val = 0.9467 (error_val_best = 0.9762), saved
+Beginning epoch 4:
+[4/50 epoch, 6327.84 sec.] error_test = 0.9712, error_val = 0.9698 (error_val_best = 0.9467)
+Beginning epoch 5:
+[5/50 epoch, 6511.54 sec.] error_test = 0.9869, error_val = 0.9860 (error_val_best = 0.9467)
+Beginning epoch 6:
+[6/50 epoch, 6504.63 sec.] error_test = 0.9962, error_val = 0.9964 (error_val_best = 0.9467)
+Beginning epoch 7:
+[7/50 epoch, 6505.29 sec.] error_test = 0.9797, error_val = 0.9806 (error_val_best = 0.9467)
+Beginning epoch 8:
+[8/50 epoch, 6535.59 sec.] error_test = 0.9883, error_val = 0.9868 (error_val_best = 0.9467)
+Beginning epoch 9:
+[9/50 epoch, 6590.64 sec.] error_test = 0.9718, error_val = 0.9723 (error_val_best = 0.9467)
+Beginning epoch 10:
+[10/50 epoch, 6697.81 sec.] error_test = 0.9715, error_val = 0.9704 (error_val_best = 0.9467)
+Beginning epoch 11:
+[11/50 epoch, 6505.26 sec.] error_test = 0.9835, error_val = 0.9847 (error_val_best = 0.9467)
+Beginning epoch 12:
+[12/50 epoch, 6889.68 sec.] error_test = 0.9674, error_val = 0.9672 (error_val_best = 0.9467)
+Beginning epoch 13:
+[13/50 epoch, 6936.88 sec.] error_test = 0.9907, error_val = 0.9910 (error_val_best = 0.9467)
+Beginning epoch 14:
+[14/50 epoch, 7203.90 sec.] error_test = 0.9677, error_val = 0.9664 (error_val_best = 0.9467)
+Beginning epoch 15:
+[15/50 epoch, 6823.40 sec.] error_test = 0.9674, error_val = 0.9676 (error_val_best = 0.9467)
+Beginning epoch 16:
+[16/50 epoch, 6849.04 sec.] error_test = 0.9649, error_val = 0.9654 (error_val_best = 0.9467)
+Beginning epoch 17:
+[17/50 epoch, 6713.18 sec.] error_test = 0.9608, error_val = 0.9598 (error_val_best = 0.9467)
+Beginning epoch 18:
+[18/50 epoch, 6483.70 sec.] error_test = 0.9504, error_val = 0.9499 (error_val_best = 0.9467)
+Beginning epoch 19:
+[19/50 epoch, 6461.80 sec.] error_test = 0.9779, error_val = 0.9789 (error_val_best = 0.9467)
+Beginning epoch 20:
+[20/50 epoch, 6568.57 sec.] error_test = 0.9819, error_val = 0.9815 (error_val_best = 0.9467)
+Beginning epoch 21:
+[21/50 epoch, 6486.56 sec.] error_test = 0.9675, error_val = 0.9677 (error_val_best = 0.9467)
+Beginning epoch 22:
+[22/50 epoch, 6881.63 sec.] error_test = 0.9839, error_val = 0.9837 (error_val_best = 0.9467)
+Beginning epoch 23:
+[23/50 epoch, 6942.78 sec.] error_test = 0.9676, error_val = 0.9675 (error_val_best = 0.9467)
+Beginning epoch 24:
+[24/50 epoch, 6891.12 sec.] error_test = 0.9418, error_val = 0.9420 (error_val_best = 0.9467), saved
+Beginning epoch 25:
+[25/50 epoch, 6895.33 sec.] error_test = 0.9418, error_val = 0.9426 (error_val_best = 0.9420)
+Beginning epoch 26:
+[26/50 epoch, 7268.69 sec.] error_test = 0.9840, error_val = 0.9856 (error_val_best = 0.9420)
+Beginning epoch 27:
+[27/50 epoch, 7502.32 sec.] error_test = 0.9442, error_val = 0.9452 (error_val_best = 0.9420)
+Beginning epoch 28:
+[28/50 epoch, 7387.21 sec.] error_test = 0.9906, error_val = 0.9911 (error_val_best = 0.9420)
+Beginning epoch 29:
+[29/50 epoch, 7830.37 sec.] error_test = 0.9653, error_val = 0.9653 (error_val_best = 0.9420)
+Beginning epoch 30:
+[30/50 epoch, 8046.28 sec.] error_test = 0.9418, error_val = 0.9422 (error_val_best = 0.9420)
+Beginning epoch 31:
+[31/50 epoch, 7884.67 sec.] error_test = 0.9906, error_val = 0.9910 (error_val_best = 0.9420)
+Beginning epoch 32:
+[32/50 epoch, 7134.22 sec.] error_test = 0.9619, error_val = 0.9628 (error_val_best = 0.9420)
+Beginning epoch 33:
+[33/50 epoch, 6947.25 sec.] error_test = 0.9836, error_val = 0.9852 (error_val_best = 0.9420)
+Beginning epoch 34:
+[34/50 epoch, 6953.11 sec.] error_test = 0.9836, error_val = 0.9844 (error_val_best = 0.9420)
+Beginning epoch 35:
+[35/50 epoch, 6058.95 sec.] error_test = 0.9681, error_val = 0.9680 (error_val_best = 0.9420)
+Beginning epoch 36:
+[36/50 epoch, 6476.07 sec.] error_test = 0.9667, error_val = 0.9655 (error_val_best = 0.9420)
+Beginning epoch 37:
+[37/50 epoch, 6307.53 sec.] error_test = 0.9437, error_val = 0.9438 (error_val_best = 0.9420)
+Beginning epoch 38:
+[38/50 epoch, 6530.77 sec.] error_test = 0.9667, error_val = 0.9664 (error_val_best = 0.9420)
+Beginning epoch 39:
+[39/50 epoch, 6347.30 sec.] error_test = 0.9418, error_val = 0.9415 (error_val_best = 0.9420), saved
+Beginning epoch 40:
+[40/50 epoch, 6288.60 sec.] error_test = 0.9418, error_val = 0.9428 (error_val_best = 0.9415)
+Beginning epoch 41:
+[41/50 epoch, 6363.60 sec.] error_test = 0.9418, error_val = 0.9428 (error_val_best = 0.9415)
+Beginning epoch 42:
+[42/50 epoch, 6455.47 sec.] error_test = 0.9418, error_val = 0.9427 (error_val_best = 0.9415)
+Beginning epoch 43:
+[43/50 epoch, 6304.78 sec.] error_test = 0.9418, error_val = 0.9418 (error_val_best = 0.9415)
+Beginning epoch 44:

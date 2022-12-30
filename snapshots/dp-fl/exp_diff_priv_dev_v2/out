@@ -1,0 +1,70 @@
+args:
+	exp_name: exp_diff_priv_dev_v2
+	snapshot_root: snapshots
+	cpu: False
+	multi_gpus: False
+	data:
+		batch_size: 16
+		n_workers: 8
+		src: FEMNIST
+		num_participants: None
+		preselected_participants: None
+		in_dim: 784
+		n_labels: 62
+		seed: 42
+		device: cuda:0
+		exp_name: exp_diff_priv_dev_v2
+		snapshot_root: snapshots
+
+	model:
+		base: ResNet18
+		path_pretrained: None
+		device: cuda:0
+		exp_name: exp_diff_priv_dev_v2
+		snapshot_root: snapshots
+
+	train:
+		federated: True
+		rerun: False
+		load_final: False
+		resume: None
+		method: src
+		optimizer: SGD
+		n_epochs: 50
+		lr: 0.001
+		momentum: 0.9
+		weight_decay: 0.0
+		lr_decay_epoch: 20
+		lr_decay_rate: 0.75
+		val_period: 1
+		dp: True
+		c: 1.0
+		E: 3
+		epsilon: 5.0
+		delta: 0.001
+		q: 1.0
+		device: cuda:0
+		exp_name: exp_diff_priv_dev_v2
+		snapshot_root: snapshots
+
+	train_ps:
+		method: pac_predset_federated
+		rerun: False
+		load_final: False
+		verbose: True
+		binary_search: False
+		bnd_type: direct
+		T_step: 1e-07
+		T_end: inf
+		eps_tol: 1.25
+		n: 5000
+		eps: 0.01
+		delta: 0.001
+		device: cuda:0
+		exp_name: exp_diff_priv_dev_v2
+		snapshot_root: snapshots
+
+	device: cuda:0
+
+## init datasets: FEMNIST
+All participants initially loaded

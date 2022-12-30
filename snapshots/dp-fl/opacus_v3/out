@@ -1,0 +1,84 @@
+args:
+	exp_name: opacus_v3
+	snapshot_root: snapshots
+	cpu: False
+	multi_gpus: False
+	data:
+		batch_size: 16
+		n_workers: 8
+		src: FEMNIST
+		num_participants: 10
+		preselected_participants: /home/aheyler/PAC-pred-set/snapshots/opacus_v3.2/participants_arr.npy
+		in_dim: 784
+		n_labels: 62
+		seed: 42
+		device: cuda:0
+		exp_name: opacus_v3
+		snapshot_root: snapshots
+
+	model:
+		base: ResNet18
+		path_pretrained: None
+		device: cuda:0
+		exp_name: opacus_v3
+		snapshot_root: snapshots
+
+	train:
+		federated: True
+		rerun: False
+		load_final: False
+		resume: /home/aheyler/PAC-pred-set/snapshots/opacus_v3.2/model_params_best
+		method: src
+		optimizer: SGD
+		n_epochs: 200
+		lr: 0.001
+		momentum: 0.9
+		weight_decay: 1e-05
+		lr_decay_epoch: 20
+		lr_decay_rate: 0.75
+		val_period: 1
+		dp: True
+		clip: 1.0
+		client_sampling_rate: 0.5
+		E: 1
+		epsilon: 10.0
+		delta: 0.001
+		device: cuda:0
+		exp_name: opacus_v3
+		snapshot_root: snapshots
+
+	train_ps:
+		method: pac_predset_federated
+		rerun: False
+		load_final: False
+		verbose: True
+		binary_search: False
+		bnd_type: direct
+		T_step: 1e-07
+		T_end: inf
+		eps_tol: 1.25
+		n: 5000
+		eps: 0.01
+		delta: 0.001
+		device: cuda:0
+		exp_name: opacus_v3
+		snapshot_root: snapshots
+
+	device: cuda:0
+
+## init datasets: FEMNIST
+Loaded preselected participants:
+['f0000_14' 'f0001_41' 'f0002_01' ... 'f4092_24' 'f4093_35' 'f4094_49']
+#train = 1073, #val = 136, #test = 134
+#num_participants = 4
+
+## init models: ResNet18
+
+BaseFederatedLearner params
+Namespace(E=1, client_sampling_rate=0.5, clip=1.0, delta=0.001, device=device(type='cuda', index=0), dp=True, epsilon=10.0, exp_name='opacus_v3', federated=True, load_final=False, lr=0.001, lr_decay_epoch=20, lr_decay_rate=0.75, method='src', momentum=0.9, n_epochs=200, optimizer='SGD', rerun=False, resume='/home/aheyler/PAC-pred-set/snapshots/opacus_v3.2/model_params_best', snapshot_root='snapshots', val_period=1, weight_decay=1e-05)
+Created federated learner
+## train...
+Entered train
+Number of participants: 4
+Resuming training
+## resume training from /home/aheyler/PAC-pred-set/snapshots/opacus_v3.2/model_params_best: epoch=52 

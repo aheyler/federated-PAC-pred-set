@@ -1,0 +1,103 @@
+args:
+	exp_name: ps_delta_0.01_eps_0.14
+	snapshot_root: snapshots
+	cpu: False
+	multi_gpus: False
+	data:
+		batch_size: 16
+		n_workers: 8
+		src: FEMNIST
+		num_participants: None
+		preselected_participants: None
+		in_dim: 784
+		n_labels: 62
+		seed: 42
+		device: cuda:0
+		exp_name: ps_delta_0.01_eps_0.14
+		snapshot_root: snapshots
+
+	model:
+		base: ResNet18
+		path_pretrained: /home/aheyler/PAC-pred-set/snapshots/non-dp-fl/latest_model_copy/model_params_best copy
+		device: cuda:0
+		exp_name: ps_delta_0.01_eps_0.14
+		snapshot_root: snapshots
+
+	train:
+		n_labels: 62
+		federated: True
+		rerun: False
+		load_final: False
+		resume: None
+		method: src
+		optimizer: SGD
+		n_epochs: 200
+		lr: 0.001
+		momentum: 0.9
+		weight_decay: 1e-05
+		lr_decay_epoch: 20
+		lr_decay_rate: 0.75
+		val_period: 1
+		dp: False
+		clip: 1.0
+		client_sampling_rate: 0.5
+		E: 1
+		epsilon: 8.0
+		delta: 0.001
+		device: cuda:0
+		exp_name: ps_delta_0.01_eps_0.14
+		snapshot_root: snapshots
+
+	train_ps:
+		method: pac_predset_federated
+		rerun: False
+		load_final: False
+		verbose: True
+		binary_search: False
+		bnd_type: direct
+		T_step: 1e-07
+		T_end: inf
+		eps_tol: 1.25
+		n: 5000
+		eps: 0.14
+		delta: 0.01
+		device: cuda:0
+		exp_name: ps_delta_0.01_eps_0.14
+		snapshot_root: snapshots
+
+	device: cuda:0
+
+## init datasets: FEMNIST
+All participants initially loaded
+#train = 107479, #val = 14453, #test = 13824
+#num_participants = 1230
+
+## init models: ResNet18
+
+Created federated learner
+Loaded model from /home/aheyler/PAC-pred-set/snapshots/non-dp-fl/latest_model_copy/model_params_best copy
+## prediction set estimation
+Begin federated PS construction
+PredSetConstructorFederated params
+Namespace(T_end=inf, T_step=1e-07, binary_search=False, bnd_type='direct', delta=0.01, device=device(type='cuda', index=0), eps=0.14, eps_tol=1.25, exp_name='ps_delta_0.01_eps_0.14', load_final=False, method='pac_predset_federated', n=5000, rerun=False, snapshot_root='snapshots', verbose=True)
+
+## Training dataset results for n=14453, eps=0.14, delta=0.01, K=1926:
+Probability threshold=0.2500, T=1.3863, Error rate = 0.1231, Errors = 1779, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0566
+Probability threshold=0.6250, T=0.4700, Error rate = 0.2617, Errors = 3783, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.7776
+Probability threshold=0.4375, T=0.8267, Error rate = 0.1856, Errors = 2683, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.8975
+Probability threshold=0.3438, T=1.0678, Error rate = 0.1535, Errors = 2218, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.9671
+Probability threshold=0.2969, T=1.2144, Error rate = 0.1374, Errors = 1986, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0094
+Probability threshold=0.2734, T=1.2967, Error rate = 0.1304, Errors = 1884, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0319
+Probability threshold=0.2852, T=1.2547, Error rate = 0.1339, Errors = 1935, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0201
+Probability threshold=0.2793, T=1.2755, Error rate = 0.1322, Errors = 1911, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0261
+Probability threshold=0.2822, T=1.2650, Error rate = 0.1330, Errors = 1922, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0237
+Probability threshold=0.2837, T=1.2599, Error rate = 0.1333, Errors = 1927, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0220
+Probability threshold=0.2830, T=1.2625, Error rate = 0.1331, Errors = 1923, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0230
+Probability threshold=0.2833, T=1.2612, Error rate = 0.1333, Errors = 1927, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0224
+Probability threshold=0.2831, T=1.2618, Error rate = 0.1333, Errors = 1927, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0225
+Probability threshold=0.2831, T=1.2621, Error rate = 0.1331, Errors = 1924, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0228
+Probability threshold=0.2831, T=1.2620, Error rate = 0.1333, Errors = 1927, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0225
+Probability threshold=0.2831, T=1.2620, Error rate = 0.1333, Errors = 1926, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0226
+
+## Test dataset results for n=13824, eps=0.14, delta=0.01:
+Probability threshold=0.2831, T=1.2620, Error rate = 0.1298, Errors = 1794, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0305

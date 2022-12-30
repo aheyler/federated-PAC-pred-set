@@ -1,0 +1,56 @@
+                method: pac_predset_federated
+                rerun: False
+                load_final: False
+                verbose: True
+                binary_search: False
+                bnd_type: direct
+                T_step: 1e-07
+                T_end: inf
+                eps_tol: 1.25
+                n: 5000
+                eps: 0.15
+                delta: 0.01
+                device: cuda:0
+                exp_name: ps_delta_0.01_eps_0.15
+                snapshot_root: snapshots
+
+        device: cuda:0
+
+## init datasets: FEMNIST
+All participants initially loaded
+#train = 107479, #val = 14453, #test = 13824
+#num_participants = 1230
+
+## init models: ResNet18
+/home/aheyler/anaconda3/envs/py37/lib/python3.7/site-packages/torchvision/models/_utils.py:209: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and will be removed in 0.15, please use 'weights' instead.
+  f"The parameter '{pretrained_param}' is deprecated since 0.13 and will be removed in 0.15, "
+/home/aheyler/anaconda3/envs/py37/lib/python3.7/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and will be removed in 0.15. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+/home/aheyler/PAC-pred-set/model/resnet.py:25: UserWarning: use a unified model structure for model loading
+  warnings.warn('use a unified model structure for model loading')
+
+Created federated learner
+Loaded model from /home/aheyler/PAC-pred-set/snapshots/non-dp-fl/latest_model_copy/model_params_best copy
+## prediction set estimation
+Begin federated PS construction
+PredSetConstructorFederated params
+Namespace(T_end=inf, T_step=1e-07, binary_search=False, bnd_type='direct', delta=0.01, device=device(type='cuda', index=0), eps=0.15, eps_tol=1.25, exp_name='ps_delta_0.01_eps_0.15', load_final=False, method='pac_predset_federated', n=5000, rerun=False, snapshot_root='snapshots', verbose=True)
+
+## Training dataset results for n=14453, eps=0.15, delta=0.01, K=2068:
+Probability threshold=0.2500, T=1.3863, Error rate = 0.1231, Errors = 1779, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0566
+Probability threshold=0.6250, T=0.4700, Error rate = 0.2617, Errors = 3783, Size = [0.0, 1.0, 1.0, 1.0, 1.0], Mean size = 0.7776
+Probability threshold=0.4375, T=0.8267, Error rate = 0.1856, Errors = 2683, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.8975
+Probability threshold=0.3438, T=1.0678, Error rate = 0.1535, Errors = 2218, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.9671
+Probability threshold=0.2969, T=1.2144, Error rate = 0.1374, Errors = 1986, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0094
+Probability threshold=0.3203, T=1.1385, Error rate = 0.1451, Errors = 2097, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.9881
+Probability threshold=0.3086, T=1.1757, Error rate = 0.1411, Errors = 2039, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.9983
+Probability threshold=0.3145, T=1.1569, Error rate = 0.1430, Errors = 2067, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.9933
+Probability threshold=0.3174, T=1.1476, Error rate = 0.1437, Errors = 2077, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.9909
+Probability threshold=0.3159, T=1.1523, Error rate = 0.1435, Errors = 2074, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.9918
+Probability threshold=0.3152, T=1.1546, Error rate = 0.1434, Errors = 2072, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.9923
+Probability threshold=0.3148, T=1.1558, Error rate = 0.1433, Errors = 2071, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.9927
+Probability threshold=0.3146, T=1.1563, Error rate = 0.1432, Errors = 2069, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.9929
+Probability threshold=0.3145, T=1.1566, Error rate = 0.1431, Errors = 2068, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.9932
+
+## Test dataset results for n=13824, eps=0.15, delta=0.01:
+Probability threshold=0.3145, T=1.1566, Error rate = 0.1406, Errors = 1943, Size = [0.0, 1.0, 1.0, 1.0, 2.0], Mean size = 0.9959

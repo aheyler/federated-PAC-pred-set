@@ -1,0 +1,84 @@
+args:
+	exp_name: opacus_fmnist_all_participants
+	snapshot_root: snapshots
+	cpu: False
+	multi_gpus: False
+	data:
+		batch_size: 16
+		n_workers: 8
+		src: FEMNIST
+		num_participants: None
+		preselected_participants: None
+		in_dim: 784
+		n_labels: 10
+		seed: 42
+		device: cuda:0
+		exp_name: opacus_fmnist_all_participants
+		snapshot_root: snapshots
+
+	model:
+		base: ResNet18
+		path_pretrained: None
+		device: cuda:0
+		exp_name: opacus_fmnist_all_participants
+		snapshot_root: snapshots
+
+	train:
+		n_labels: 10
+		federated: True
+		rerun: False
+		load_final: False
+		resume: None
+		method: src
+		optimizer: SGD
+		n_epochs: 200
+		lr: 0.001
+		momentum: 0.9
+		weight_decay: 1e-05
+		lr_decay_epoch: 20
+		lr_decay_rate: 0.75
+		val_period: 1
+		dp: True
+		clip: 1.0
+		client_sampling_rate: 0.5
+		E: 1
+		epsilon: 8.0
+		delta: 0.001
+		device: cuda:0
+		exp_name: opacus_fmnist_all_participants
+		snapshot_root: snapshots
+
+	train_ps:
+		method: pac_predset_federated
+		rerun: False
+		load_final: False
+		verbose: True
+		binary_search: False
+		bnd_type: direct
+		T_step: 1e-07
+		T_end: inf
+		eps_tol: 1.25
+		n: 5000
+		eps: 0.01
+		delta: 0.001
+		device: cuda:0
+		exp_name: opacus_fmnist_all_participants
+		snapshot_root: snapshots
+
+	device: cuda:0
+
+## init datasets: FEMNIST
+All participants initially loaded
+f4094_49 has no data
+#train = 320385, #val = 41886, #test = 39956
+#num_participants = 3541
+
+## init models: ResNet18
+
+BaseFederatedLearner params
+Namespace(E=1, client_sampling_rate=0.5, clip=1.0, delta=0.001, device=device(type='cuda', index=0), dp=True, epsilon=8.0, exp_name='opacus_fmnist_all_participants', federated=True, load_final=False, lr=0.001, lr_decay_epoch=20, lr_decay_rate=0.75, method='src', momentum=0.9, n_epochs=200, n_labels=10, optimizer='SGD', rerun=False, resume=None, snapshot_root='snapshots', val_period=1, weight_decay=1e-05)
+Created federated learner
+## train...
+Entered train
+Number of participants: 3541
+Beginning training

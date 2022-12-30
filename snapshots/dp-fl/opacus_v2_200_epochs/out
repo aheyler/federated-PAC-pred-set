@@ -1,0 +1,170 @@
+args:
+	exp_name: opacus_v2_200_epochs
+	snapshot_root: snapshots
+	cpu: False
+	multi_gpus: False
+	data:
+		batch_size: 16
+		n_workers: 8
+		src: FEMNIST
+		num_participants: 20
+		preselected_participants: /home/aheyler/PAC-pred-set/snapshots/opacus_v3.2/participants_arr.npy
+		in_dim: 784
+		n_labels: 62
+		seed: 42
+		device: cuda:0
+		exp_name: opacus_v2_200_epochs
+		snapshot_root: snapshots
+
+	model:
+		base: ResNet18
+		path_pretrained: None
+		device: cuda:0
+		exp_name: opacus_v2_200_epochs
+		snapshot_root: snapshots
+
+	train:
+		federated: True
+		rerun: False
+		load_final: False
+		resume: /home/aheyler/PAC-pred-set/snapshots/opacus_v3.2/model_params_best
+		method: src
+		optimizer: SGD
+		n_epochs: 200
+		lr: 0.001
+		momentum: 0.9
+		weight_decay: 1e-05
+		lr_decay_epoch: 20
+		lr_decay_rate: 0.75
+		val_period: 1
+		dp: True
+		clip: 1.0
+		client_sampling_rate: 0.5
+		E: 1
+		epsilon: 10.0
+		delta: 0.001
+		device: cuda:0
+		exp_name: opacus_v2_200_epochs
+		snapshot_root: snapshots
+
+	train_ps:
+		method: pac_predset_federated
+		rerun: False
+		load_final: False
+		verbose: True
+		binary_search: False
+		bnd_type: direct
+		T_step: 1e-07
+		T_end: inf
+		eps_tol: 1.25
+		n: 5000
+		eps: 0.01
+		delta: 0.001
+		device: cuda:0
+		exp_name: opacus_v2_200_epochs
+		snapshot_root: snapshots
+
+	device: cuda:0
+
+## init datasets: FEMNIST
+Loaded preselected participants:
+['f0000_14' 'f0001_41' 'f0002_01' ... 'f4092_24' 'f4093_35' 'f4094_49']
+#train = 2170, #val = 274, #test = 272
+#num_participants = 8
+
+## init models: ResNet18
+
+BaseFederatedLearner params
+Namespace(E=1, client_sampling_rate=0.5, clip=1.0, delta=0.001, device=device(type='cuda', index=0), dp=True, epsilon=10.0, exp_name='opacus_v2_200_epochs', federated=True, load_final=False, lr=0.001, lr_decay_epoch=20, lr_decay_rate=0.75, method='src', momentum=0.9, n_epochs=200, optimizer='SGD', rerun=False, resume='/home/aheyler/PAC-pred-set/snapshots/opacus_v3.2/model_params_best', snapshot_root='snapshots', val_period=1, weight_decay=1e-05)
+Created federated learner
+## train...
+Entered train
+Number of participants: 8
+Resuming training
+## resume training from /home/aheyler/PAC-pred-set/snapshots/opacus_v3.2/model_params_best: epoch=52 
+Beginning epoch 52
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+[52/200 epoch, lr=1.00e-03, 18.76 sec.] loss = 4.1744, error_train = 0.9947, error_test = 0.9853, error_val = 0.9891 (error_val_best = 0.9161)
+(ε = 10.00, δ = 0.001)
+## save the final model to snapshots/opacus_v2_200_epochs/model_params_final
+snapshots/opacus_v2_200_epochs/model_params_best
+[best model is loaded] snapshots/opacus_v2_200_epochs/model_params_best
+## load the best model from snapshots/opacus_v2_200_epochs/model_params_best
+## training time: 29.875386 sec.
+Beginning epoch 53
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+[53/200 epoch, lr=1.00e-03, 23.79 sec.] loss = 4.2243, error_train = 0.9131, error_test = 0.9191, error_val = 0.8978 (error_val_best = 0.9161), saved
+(ε = 10.00, δ = 0.001)
+## save the final model to snapshots/opacus_v2_200_epochs/model_params_final
+snapshots/opacus_v2_200_epochs/model_params_best
+[best model is loaded] snapshots/opacus_v2_200_epochs/model_params_best
+## load the best model from snapshots/opacus_v2_200_epochs/model_params_best
+## training time: 53.828406 sec.
+Beginning epoch 54
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+[54/200 epoch, lr=1.00e-03, 28.29 sec.] loss = 3.8397, error_train = 0.9236, error_test = 0.9412, error_val = 0.9161 (error_val_best = 0.8978)
+(ε = 10.00, δ = 0.001)
+## save the final model to snapshots/opacus_v2_200_epochs/model_params_final
+snapshots/opacus_v2_200_epochs/model_params_best
+[best model is loaded] snapshots/opacus_v2_200_epochs/model_params_best
+## load the best model from snapshots/opacus_v2_200_epochs/model_params_best
+## training time: 82.313485 sec.
+Beginning epoch 55
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+[55/200 epoch, lr=1.00e-03, 29.73 sec.] loss = 4.4009, error_train = 0.9233, error_test = 0.9081, error_val = 0.9197 (error_val_best = 0.8978)
+(ε = 10.00, δ = 0.001)
+## save the final model to snapshots/opacus_v2_200_epochs/model_params_final
+snapshots/opacus_v2_200_epochs/model_params_best
+[best model is loaded] snapshots/opacus_v2_200_epochs/model_params_best
+## load the best model from snapshots/opacus_v2_200_epochs/model_params_best
+## training time: 112.154511 sec.
+Beginning epoch 56
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+[56/200 epoch, lr=1.00e-03, 31.89 sec.] loss = 3.6187, error_train = 0.9057, error_test = 0.9228, error_val = 0.9270 (error_val_best = 0.8978)
+(ε = 10.00, δ = 0.001)
+## save the final model to snapshots/opacus_v2_200_epochs/model_params_final
+snapshots/opacus_v2_200_epochs/model_params_best
+[best model is loaded] snapshots/opacus_v2_200_epochs/model_params_best
+## load the best model from snapshots/opacus_v2_200_epochs/model_params_best
+## training time: 144.312719 sec.
+Beginning epoch 57
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+[57/200 epoch, lr=1.00e-03, 32.81 sec.] loss = 5.7291, error_train = 0.9102, error_test = 0.9265, error_val = 0.9197 (error_val_best = 0.8978)
+(ε = 10.00, δ = 0.001)
+## save the final model to snapshots/opacus_v2_200_epochs/model_params_final
+snapshots/opacus_v2_200_epochs/model_params_best
+[best model is loaded] snapshots/opacus_v2_200_epochs/model_params_best
+## load the best model from snapshots/opacus_v2_200_epochs/model_params_best
+## training time: 177.262630 sec.
+Beginning epoch 58
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+[58/200 epoch, lr=1.00e-03, 26.77 sec.] loss = 4.1920, error_train = 0.9385, error_test = 0.9338, error_val = 0.9088 (error_val_best = 0.8978)
+(ε = 10.00, δ = 0.001)
+## save the final model to snapshots/opacus_v2_200_epochs/model_params_final
+snapshots/opacus_v2_200_epochs/model_params_best
+[best model is loaded] snapshots/opacus_v2_200_epochs/model_params_best
+## load the best model from snapshots/opacus_v2_200_epochs/model_params_best
+## training time: 204.142410 sec.
+Beginning epoch 59
+DP-SGD with sampling rate = 100% and noise_multiplier = 6.193872723187054 iterated over 200 steps satisfies differential privacy with eps = 10 and delta = 0.001.

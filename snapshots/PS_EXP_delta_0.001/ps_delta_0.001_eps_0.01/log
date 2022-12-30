@@ -1,0 +1,57 @@
+# redo 12, 14, 19, 21, 22, 24!! 
+        train_ps:
+                method: pac_predset_federated
+                rerun: False
+                load_final: False
+                verbose: True
+                binary_search: False
+                bnd_type: direct
+                T_step: 1e-07
+                T_end: inf
+                eps_tol: 1.25
+                n: 5000
+                eps: 0.01
+                delta: 0.001
+                device: cuda:0
+                exp_name: opacus_fmnist
+                snapshot_root: snapshots
+
+        device: cuda:0
+
+## init datasets: FEMNIST
+All participants initially loaded
+#train = 107479, #val = 14453, #test = 13824
+#num_participants = 1230
+
+## init models: ResNet18
+/home/aheyler/anaconda3/envs/py37/lib/python3.7/site-packages/torchvision/models/_utils.py:209: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and will be removed in 0.15, please use 'weights' instead.
+  f"The parameter '{pretrained_param}' is deprecated since 0.13 and will be removed in 0.15, "
+/home/aheyler/anaconda3/envs/py37/lib/python3.7/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and will be removed in 0.15. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+/home/aheyler/PAC-pred-set/model/resnet.py:25: UserWarning: use a unified model structure for model loading
+  warnings.warn('use a unified model structure for model loading')
+
+Created federated learner
+Loaded model from /home/aheyler/PAC-pred-set/snapshots/non-dp-fl/latest_model_copy/model_params_best copy
+## prediction set estimation
+Begin federated PS construction
+PredSetConstructorFederated params
+Namespace(T_end=inf, T_step=1e-07, binary_search=False, bnd_type='direct', delta=0.001, device=device(type='cuda', index=0), eps=0.01, eps_tol=1.25, exp_name='opacus_fmnist', load_final=False, method='pac_predset_federated', n=5000, rerun=False, snapshot_root='snapshots', verbose=True)
+
+## Training dataset results for n=14453, eps=0.01, delta=0.001, K=108:
+Probability threshold=0.2500, T=1.3863, Error rate = 0.1231, Errors = 1779, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0566
+Probability threshold=0.1250, T=2.0794, Error rate = 0.0757, Errors = 1094, Size = [0.0, 1.0, 1.0, 2.0, 5.0], Mean size = 1.3085
+Probability threshold=0.0625, T=2.7726, Error rate = 0.0468, Errors = 677, Size = [1.0, 1.0, 1.0, 2.0, 8.0], Mean size = 1.6889
+Probability threshold=0.0312, T=3.4657, Error rate = 0.0264, Errors = 381, Size = [1.0, 1.0, 2.0, 3.0, 13.0], Mean size = 2.3026
+Probability threshold=0.0156, T=4.1589, Error rate = 0.0142, Errors = 205, Size = [1.0, 1.0, 2.0, 4.0, 25.0], Mean size = 3.3087
+Probability threshold=0.0078, T=4.8520, Error rate = 0.0076, Errors = 110, Size = [1.0, 2.0, 3.0, 6.0, 43.0], Mean size = 4.8772
+Probability threshold=0.0039, T=5.5452, Error rate = 0.0032, Errors = 46, Size = [1.0, 2.0, 4.0, 9.0, 57.0], Mean size = 7.2224
+Probability threshold=0.0059, T=5.1397, Error rate = 0.0057, Errors = 82, Size = [1.0, 2.0, 4.0, 7.0, 50.0], Mean size = 5.7399
+Probability threshold=0.0068, T=4.9856, Error rate = 0.0066, Errors = 96, Size = [1.0, 2.0, 3.0, 7.0, 46.0], Mean size = 5.2601
+Probability threshold=0.0073, T=4.9166, Error rate = 0.0070, Errors = 101, Size = [1.0, 2.0, 3.0, 6.0, 44.0], Mean size = 5.0594
+Probability threshold=0.0076, T=4.8838, Error rate = 0.0076, Errors = 110, Size = [1.0, 2.0, 3.0, 6.0, 44.0], Mean size = 4.9650
+Probability threshold=0.0074, T=4.9000, Error rate = 0.0074, Errors = 107, Size = [1.0, 2.0, 3.0, 6.0, 44.0], Mean size = 5.0125
+Probability threshold=0.0075, T=4.8919, Error rate = 0.0075, Errors = 108, Size = [1.0, 2.0, 3.0, 6.0, 44.0], Mean size = 4.9880
+
+## Test dataset results for n=13824, eps=0.01, delta=0.001:
+Probability threshold=0.0075, T=4.8919, Error rate = 0.0073, Errors = 101, Size = [1.0, 2.0, 3.0, 6.0, 38.0], Mean size = 4.9567

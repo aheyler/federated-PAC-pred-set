@@ -1,0 +1,113 @@
+args:
+	exp_name: exp_diff_priv_opacus
+	snapshot_root: snapshots
+	cpu: False
+	multi_gpus: False
+	data:
+		batch_size: 16
+		n_workers: 8
+		src: FEMNIST
+		num_participants: 200
+		preselected_participants: None
+		in_dim: 784
+		n_labels: 62
+		seed: 42
+		device: cuda:0
+		exp_name: exp_diff_priv_opacus
+		snapshot_root: snapshots
+
+	model:
+		base: ResNet18
+		path_pretrained: None
+		device: cuda:0
+		exp_name: exp_diff_priv_opacus
+		snapshot_root: snapshots
+
+	train:
+		federated: True
+		rerun: False
+		load_final: False
+		resume: None
+		method: src
+		optimizer: SGD
+		n_epochs: 20
+		lr: 0.001
+		momentum: 0.9
+		weight_decay: 0.0
+		lr_decay_epoch: 20
+		lr_decay_rate: 0.75
+		val_period: 1
+		dp: True
+		clip: 1.0
+		client_sampling_rate: 0.5
+		E: 5
+		epsilon: 10.0
+		delta: 0.001
+		device: cuda:0
+		exp_name: exp_diff_priv_opacus
+		snapshot_root: snapshots
+
+	train_ps:
+		method: pac_predset_federated
+		rerun: False
+		load_final: False
+		verbose: True
+		binary_search: False
+		bnd_type: direct
+		T_step: 1e-07
+		T_end: inf
+		eps_tol: 1.25
+		n: 5000
+		eps: 0.01
+		delta: 0.001
+		device: cuda:0
+		exp_name: exp_diff_priv_opacus
+		snapshot_root: snapshots
+
+	device: cuda:0
+
+## init datasets: FEMNIST
+All participants initially loaded
+#train = 18955, #val = 2402, #test = 2372
+#num_participants = 71
+
+## init models: ResNet18
+
+BaseFederatedLearner params
+Namespace(E=5, client_sampling_rate=0.5, clip=1.0, delta=0.001, device=device(type='cuda', index=0), dp=True, epsilon=10.0, exp_name='exp_diff_priv_opacus', federated=True, load_final=False, lr=0.001, lr_decay_epoch=20, lr_decay_rate=0.75, method='src', momentum=0.9, n_epochs=20, optimizer='SGD', rerun=False, resume=None, snapshot_root='snapshots', val_period=1, weight_decay=0.0)
+Created federated learner
+## train...
+Entered train
+Number of participants: 71
+Set optimizer
+Beginning training
+Beginning epoch 1
+DP-SGD with sampling rate = 100% and noise_multiplier = 4.37972959664628 iterated over 100 steps satisfies differential privacy with eps = 10 and delta = 0.001.
+[1/20 epoch, lr=1.00e-03, 566.48 sec.] loss = 149363.7031, error_test = 0.9709, error_val = 0.9704 (error_val_best = 0.9983), saved
+[2/20 epoch, lr=1.00e-03, 583.69 sec.] loss = 71.2326, error_test = 0.9730, error_val = 0.9754 (error_val_best = 0.9704)
+[3/20 epoch, lr=1.00e-03, 653.41 sec.] loss = 82.7034, error_test = 0.9730, error_val = 0.9738 (error_val_best = 0.9704)
+[4/20 epoch, lr=1.00e-03, 638.48 sec.] loss = 83.1185, error_test = 0.9777, error_val = 0.9784 (error_val_best = 0.9704)
+[5/20 epoch, lr=1.00e-03, 657.92 sec.] loss = 63.1008, error_test = 0.9734, error_val = 0.9709 (error_val_best = 0.9704)
+[6/20 epoch, lr=1.00e-03, 714.02 sec.] loss = 52.6132, error_test = 0.9667, error_val = 0.9704 (error_val_best = 0.9704), saved
+[7/20 epoch, lr=1.00e-03, 734.61 sec.] loss = 61.1174, error_test = 0.9675, error_val = 0.9613 (error_val_best = 0.9704), saved
+[8/20 epoch, lr=1.00e-03, 722.43 sec.] loss = 54.3518, error_test = 0.9633, error_val = 0.9692 (error_val_best = 0.9613)
+[9/20 epoch, lr=1.00e-03, 725.25 sec.] loss = 57.6484, error_test = 0.9701, error_val = 0.9675 (error_val_best = 0.9613)
+[10/20 epoch, lr=1.00e-03, 799.50 sec.] loss = 56.9062, error_test = 0.9688, error_val = 0.9654 (error_val_best = 0.9613)
+[11/20 epoch, lr=1.00e-03, 833.80 sec.] loss = 62.3748, error_test = 0.9599, error_val = 0.9675 (error_val_best = 0.9613)
+[12/20 epoch, lr=1.00e-03, 919.41 sec.] loss = 58.6670, error_test = 0.9701, error_val = 0.9709 (error_val_best = 0.9613)
+[13/20 epoch, lr=1.00e-03, 929.72 sec.] loss = 41.2511, error_test = 0.9692, error_val = 0.9709 (error_val_best = 0.9613)
+[14/20 epoch, lr=1.00e-03, 780.65 sec.] loss = 41.3813, error_test = 0.9604, error_val = 0.9709 (error_val_best = 0.9613)
+[15/20 epoch, lr=1.00e-03, 873.01 sec.] loss = 34.4707, error_test = 0.9709, error_val = 0.9688 (error_val_best = 0.9613)
+[16/20 epoch, lr=1.00e-03, 835.58 sec.] loss = 36.0822, error_test = 0.9726, error_val = 0.9721 (error_val_best = 0.9613)
+[17/20 epoch, lr=1.00e-03, 877.67 sec.] loss = 44.3495, error_test = 0.9654, error_val = 0.9704 (error_val_best = 0.9613)
+[18/20 epoch, lr=1.00e-03, 847.45 sec.] loss = 35.8319, error_test = 0.9654, error_val = 0.9596 (error_val_best = 0.9613), saved
+[19/20 epoch, lr=1.00e-03, 850.51 sec.] loss = 30.7020, error_test = 0.9734, error_val = 0.9604 (error_val_best = 0.9596)
+[20/20 epoch, lr=7.50e-04, 914.98 sec.] loss = 35.3696, error_test = 0.9616, error_val = 0.9629 (error_val_best = 0.9596)
+(ε = 10.00, δ = 0.001)
+## save the final model to snapshots/exp_diff_priv_opacus/model_params_final
+snapshots/exp_diff_priv_opacus/model_params_best
+[best model is loaded] snapshots/exp_diff_priv_opacus/model_params_best
+## load the best model from snapshots/exp_diff_priv_opacus/model_params_best
+## training time: 15570.339264 sec.
+Final test error = 0.9616357684135437
+Final val error = 0.9629475474357605

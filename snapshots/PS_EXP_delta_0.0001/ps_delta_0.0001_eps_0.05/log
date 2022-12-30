@@ -1,0 +1,34 @@
+## init models: ResNet18
+/home/aheyler/anaconda3/envs/py37/lib/python3.7/site-packages/torchvision/models/_utils.py:209: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and will be removed in 0.15, please use 'weights' instead.
+  f"The parameter '{pretrained_param}' is deprecated since 0.13 and will be removed in 0.15, "
+/home/aheyler/anaconda3/envs/py37/lib/python3.7/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and will be removed in 0.15. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+/home/aheyler/PAC-pred-set/model/resnet.py:25: UserWarning: use a unified model structure for model loading
+  warnings.warn('use a unified model structure for model loading')
+
+Created federated learner
+Loaded model from /home/aheyler/PAC-pred-set/snapshots/non-dp-fl/latest_model_copy/model_params_best copy
+## prediction set estimation
+Begin federated PS construction
+PredSetConstructorFederated params
+Namespace(T_end=inf, T_step=1e-07, binary_search=False, bnd_type='direct', delta=0.0001, device=device(type='cuda', index=0), eps=0.05, eps_tol=1.25, exp_name='ps_delta_0.0001_eps_0.05', load_final=False, method='pac_predset_federated', n=5000, rerun=False, snapshot_root='snapshots', verbose=True)
+
+## Training dataset results for n=14453, eps=0.05, delta=0.0001, K=626:
+Probability threshold=0.2500, T=1.3863, Error rate = 0.1231, Errors = 1779, Size = [0.0, 1.0, 1.0, 1.0, 3.0], Mean size = 1.0566
+Probability threshold=0.1250, T=2.0794, Error rate = 0.0757, Errors = 1094, Size = [0.0, 1.0, 1.0, 2.0, 5.0], Mean size = 1.3085
+Probability threshold=0.0625, T=2.7726, Error rate = 0.0468, Errors = 677, Size = [1.0, 1.0, 1.0, 2.0, 8.0], Mean size = 1.6889
+Probability threshold=0.0312, T=3.4657, Error rate = 0.0264, Errors = 381, Size = [1.0, 1.0, 2.0, 3.0, 13.0], Mean size = 2.3026
+Probability threshold=0.0469, T=3.0603, Error rate = 0.0377, Errors = 545, Size = [1.0, 1.0, 1.0, 2.0, 10.0], Mean size = 1.9051
+Probability threshold=0.0547, T=2.9061, Error rate = 0.0419, Errors = 606, Size = [1.0, 1.0, 1.0, 2.0, 9.0], Mean size = 1.7871
+Probability threshold=0.0586, T=2.8371, Error rate = 0.0439, Errors = 635, Size = [1.0, 1.0, 1.0, 2.0, 9.0], Mean size = 1.7375
+Probability threshold=0.0566, T=2.8710, Error rate = 0.0430, Errors = 622, Size = [1.0, 1.0, 1.0, 2.0, 9.0], Mean size = 1.7620
+Probability threshold=0.0576, T=2.8539, Error rate = 0.0435, Errors = 629, Size = [1.0, 1.0, 1.0, 2.0, 9.0], Mean size = 1.7495
+Probability threshold=0.0571, T=2.8624, Error rate = 0.0434, Errors = 627, Size = [1.0, 1.0, 1.0, 2.0, 9.0], Mean size = 1.7556
+Probability threshold=0.0569, T=2.8667, Error rate = 0.0431, Errors = 623, Size = [1.0, 1.0, 1.0, 2.0, 9.0], Mean size = 1.7592
+Probability threshold=0.0570, T=2.8646, Error rate = 0.0432, Errors = 625, Size = [1.0, 1.0, 1.0, 2.0, 9.0], Mean size = 1.7575
+Probability threshold=0.0571, T=2.8635, Error rate = 0.0432, Errors = 625, Size = [1.0, 1.0, 1.0, 2.0, 9.0], Mean size = 1.7567
+Probability threshold=0.0571, T=2.8630, Error rate = 0.0434, Errors = 627, Size = [1.0, 1.0, 1.0, 2.0, 9.0], Mean size = 1.7560
+Probability threshold=0.0571, T=2.8632, Error rate = 0.0433, Errors = 626, Size = [1.0, 1.0, 1.0, 2.0, 9.0], Mean size = 1.7565
+
+## Test dataset results for n=13824, eps=0.05, delta=0.0001:
+Probability threshold=0.0571, T=2.8632, Error rate = 0.0414, Errors = 573, Size = [1.0, 1.0, 1.0, 2.0, 9.0], Mean size = 1.7472
